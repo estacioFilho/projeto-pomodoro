@@ -14,7 +14,7 @@ const pause = new Audio('sons/pause.mp3');
 const endTempo = new Audio('sons/beep.mp3');
 const iconeAudio = document.getElementsByClassName('app__card-primary-butto-icon')[0];
 const tempoTela = document.getElementById('timer');
-let tempoDecorrido = 1500;
+let tempoDecorrido = 10;
 let posicaoTempo = null;
 
 musica.loop = true;
@@ -28,7 +28,7 @@ musicaFoco.addEventListener('change', () =>{
 
 
 btnFocus.addEventListener('click', () => {
-    tempoDecorrido = 1500;
+    tempoDecorrido = 10;
     alterandoContexto('foco');
 });
 
@@ -73,6 +73,11 @@ function contagemRegressiva(){
     if(tempoDecorrido <= 0){
         endTempo.play();
         alert('Tempo finalizado!')
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if(focoAtivo){
+            const evento = new CustomEvent('focoFinalizado')
+            document.dispatchEvent(evento);
+        }
         tempoFinal();
         iconeAudio.setAttribute('src', '/imagens/play_arrow.png');  
         btnAlteraAcao[0].textContent = 'Começar';
